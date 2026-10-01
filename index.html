@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Япония. Путь к Острову кошек — демо</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FFE36B' stroke='%23111' stroke-width='3'/%3E%3Cpath d='M16 7l2.6 5.6 6.1.6-4.6 4.1 1.3 6L16 20.3 10.6 23.3l1.3-6-4.6-4.1 6.1-.6z' fill='%23111'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Neucha&family=Rubik:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#1b1b1b;overflow:hidden;-webkit-tap-highlight-color:transparent}
+body{display:flex;align-items:center;justify-content:center;font-family:Rubik,system-ui,sans-serif;
+ background:radial-gradient(circle at 20% 20%,#2a2a2a 0,#141414 70%);}
+body:before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,227,107,.08) 1.5px,transparent 1.5px);background-size:14px 14px;pointer-events:none}
+#stage{position:relative;width:540px;height:960px;transform-origin:center center;flex:none}
+.c{position:absolute;inset:0;border:6px solid #111;overflow:hidden;background:#111;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 6s ease-out}
+.c.in .bg{transform:scale(1.04)}
+.layer{position:absolute;inset:0}
+/* header */
+.cap{position:absolute;left:16px;top:16px;background:#FFF6D8;border:3px solid #111;padding:6px 12px;font:700 15px Rubik;letter-spacing:1px;z-index:5}
+.cnt{position:absolute;right:16px;top:16px;background:#FFE36B;border:3px solid #111;padding:6px 12px;font:900 18px Rubik;transform:rotate(2deg);z-index:5;transition:transform .3s}
+.cnt.pop{animation:pop .6s}
+@keyframes pop{0%{transform:rotate(2deg) scale(1)}40%{transform:rotate(-4deg) scale(1.35)}100%{transform:rotate(2deg) scale(1)}}
+.tools{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:6}
+.ib{width:38px;height:38px;border:3px solid #111;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:3px 3px 0 #111}
+.ib:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #111}
+.ib.on{background:#FFE36B}
+.ib[disabled]{opacity:.35;cursor:default}
+.loc{position:absolute;left:16px;right:16px;top:62px;background:#111;color:#fff;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;font:700 13px Rubik;letter-spacing:1px;z-index:4}
+.loc .rt{display:flex;align-items:center;gap:5px;color:#aaa}
+.loc .rt i{width:9px;height:9px;border-radius:50%;border:2px solid #FFE36B;display:inline-block}
+.loc .rt i.on{background:#FFE36B}
+.loc .rt s{width:14px;height:2px;background:#666;display:inline-block}
+.nar{position:absolute;left:16px;right:16px;top:100px;background:#FFF6D8;border:3px solid #111;box-shadow:4px 4px 0 #111;padding:10px 14px;font:21px/1.22 Neucha;color:#111;z-index:4}
+/* bubbles */
+.b{position:absolute;background:#fff;border:3px solid #111;border-radius:50%/42%;padding:12px 18px;font:24px/1.15 Neucha;color:#111;text-align:center;z-index:3;opacity:0;transform:scale(.6);transition:opacity .35s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.c.in .b{opacity:1;transform:scale(1)}
+.b:after{content:"";position:absolute;border-left:14px solid transparent;border-right:14px solid transparent;border-top:30px solid #111;bottom:-31px}
+.b:before{content:"";position:absolute;border-left:10px solid transparent;border-right:10px solid transparent;border-top:24px solid #fff;z-index:2;bottom:-22px}
+.n{display:block;font:700 13px Rubik;letter-spacing:2px;color:#666;margin-bottom:2px}
+.tl:after{left:-8px;bottom:-12px;transform:rotate(45deg)}.tl:before{left:-1px;bottom:-4px;transform:rotate(45deg)}
+.tr:after{right:-8px;bottom:-12px;transform:rotate(-45deg)}.tr:before{right:-1px;bottom:-4px;transform:rotate(-45deg)}
+.td:after{left:50%;margin-left:-14px}.td:before{left:50%;margin-left:-10px}
+.tu:after{top:-31px;bottom:auto;border-top:none;border-bottom:30px solid #111;left:50%;margin-left:-14px}
+.tu:before{top:-22px;bottom:auto;border-top:none;border-bottom:24px solid #fff;left:50%;margin-left:-10px}
+.tlf:after{left:-30px;top:50%;margin-top:-14px;bottom:auto;border-top:14px solid transparent;border-bottom:14px solid transparent;border-right:30px solid #111;border-left:none}
+.tlf:before{left:-21px;top:50%;margin-top:-10px;bottom:auto;border-top:10px solid transparent;border-bottom:10px solid transparent;border-right:24px solid #fff;border-left:none}
+/* bottom UI */
+.ui{position:absolute;left:18px;right:18px;bottom:20px;display:flex;flex-direction:column;gap:14px;z-index:6}
+.w{background:#FFF6D8;border:4px solid #111;box-shadow:6px 6px 0 #111;padding:12px 16px;display:flex;align-items:center;gap:14px;transform:rotate(-1deg);margin-bottom:4px}
+.snd{flex:none;width:54px;height:54px;border-radius:50%;background:#FFE36B;border:3px solid #111;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.snd:active{transform:scale(.92)}
+.snd.play{animation:pulse .8s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(255,227,107,.5)}}
+.w b{display:block;font:900 30px Rubik;color:#111}.w span{display:block;font:24px Neucha;color:#333}
+.w .jp{font:700 16px Rubik;color:#888;margin-left:6px}
+.q{text-align:center;background:#111;color:#FFE36B;padding:10px;font:900 19px Rubik;letter-spacing:.5px;margin-bottom:-4px}
+.btn{display:block;width:100%;text-align:center;background:#FFE36B;border:4px solid #111;box-shadow:6px 6px 0 #111;padding:12px 10px;font:900 21px Rubik;color:#111;cursor:pointer;transition:transform .08s,box-shadow .08s,background .2s}
+.btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 #111}
+.btn.alt{background:#fff}
+.btn.ok{background:#9BE38A}
+.btn.bad{background:#FFB3C0;animation:shake .4s}
+.btn[disabled]{pointer-events:none}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.fb{background:#fff;border:4px solid #111;box-shadow:6px 6px 0 #111;padding:12px 16px;font:23px/1.2 Neucha;color:#111;display:flex;gap:12px;align-items:center;animation:rise .35s}
+.fb .ic{flex:none;width:40px;height:40px;border-radius:50%;border:3px solid #111;display:flex;align-items:center;justify-content:center;font:900 22px Rubik}
+.fb.good .ic{background:#9BE38A}.fb.bad .ic{background:#FFB3C0}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* match */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{background:#fff;border:3px solid #111;box-shadow:4px 4px 0 #111;padding:10px 8px;text-align:center;font:900 19px Rubik;color:#111;cursor:pointer;transition:background .2s,transform .1s}
+.chip.r{font:22px Neucha;background:#FFF6D8}
+.chip.sel{background:#FFE36B;transform:translate(2px,2px);box-shadow:2px 2px 0 #111}
+.chip.done{background:#9BE38A;pointer-events:none;box-shadow:none;transform:translate(4px,4px)}
+.chip.bad{background:#FFB3C0;animation:shake .4s}
+/* family */
+.dim{position:absolute;inset:0;background:rgba(17,17,17,.55);z-index:2}
+.fam{position:absolute;left:24px;right:24px;top:270px;background:#FFF6D8;border:4px solid #111;box-shadow:8px 8px 0 #111;padding:26px 24px;text-align:center;transform:rotate(-1deg);z-index:4;animation:rise .5s}
+.fam .t{display:inline-block;background:#111;color:#FFE36B;font:900 16px Rubik;letter-spacing:2px;padding:6px 12px;margin-bottom:12px}
+.fam p{font:27px/1.25 Neucha;color:#111;margin-top:10px}
+.fam p b{font-family:Rubik;font-weight:900;font-size:22px}
+.fam .hint{font:700 14px Rubik;letter-spacing:1px;color:#777;margin-top:16px}
+.timer{height:8px;border:2px solid #111;background:#fff;margin-top:12px;overflow:hidden}.timer i{display:block;height:100%;width:0;background:#E8365D;transition:width linear}
+/* final */
+.ach{position:absolute;left:24px;right:24px;bottom:170px;background:#FFF6D8;border:4px solid #111;box-shadow:8px 8px 0 #111;padding:12px 16px;text-align:center;z-index:4;animation:rise .6s}
+.medal{width:76px;height:76px;margin:-52px auto 6px;border-radius:50%;background:#FFE36B;border:4px solid #111;display:flex;align-items:center;justify-content:center;font:900 34px Rubik;box-shadow:4px 4px 0 #111;animation:spin 1.2s ease-out}
+@keyframes spin{from{transform:rotateY(0) scale(.3)}to{transform:rotateY(720deg) scale(1)}}
+.ach .t{font:900 15px Rubik;letter-spacing:2px;color:#666}.ach h2{font:900 24px/1.1 Rubik;margin:4px 0 10px}
+.wl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.wl span{background:#fff;border:3px solid #111;padding:4px 8px;font:900 14px Rubik;display:flex;gap:6px;align-items:center;cursor:pointer}
+.wl span:active{background:#FFE36B}
+.stats{display:flex;justify-content:center;gap:16px;margin-top:10px;font:700 13px Rubik;letter-spacing:1px;color:#555}
+/* toast / modal */
+.toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);background:#FFE36B;border:4px solid #111;box-shadow:6px 6px 0 #111;padding:10px 20px;font:900 24px Rubik;z-index:20;animation:toast 1.6s forwards;white-space:nowrap}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,20px) scale(.6)}15%{opacity:1;transform:translate(-50%,0) scale(1.1)}25%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-30px)}}
+.modal{position:absolute;inset:0;background:rgba(17,17,17,.7);z-index:30;display:flex;align-items:center;justify-content:center;padding:30px}
+.modal .box{background:#FFF6D8;border:4px solid #111;box-shadow:8px 8px 0 #111;padding:24px;text-align:center;animation:rise .3s}
+.modal h3{font:900 24px Rubik;margin-bottom:10px}.modal p{font:23px/1.25 Neucha;margin-bottom:18px}
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:25;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border:2px solid #111;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(1000px) rotate(720deg)}}
+/* start */
+.start{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:linear-gradient(0deg,rgba(17,17,17,.85) 0,rgba(17,17,17,.2) 55%,transparent 80%)}
+.start .tag{align-self:flex-start;background:#111;color:#FFE36B;font:900 14px Rubik;letter-spacing:2px;padding:6px 10px;margin-bottom:10px;border:2px solid #FFE36B}
+.start h1{font:900 46px/1 Rubik;color:#fff;text-shadow:4px 4px 0 #111;margin-bottom:10px}
+.start p{font:23px/1.25 Neucha;color:#fff;margin-bottom:18px}
+.start .meta{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.start .meta span{background:#FFF6D8;border:3px solid #111;padding:5px 10px;font:700 14px Rubik}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div id="stage" role="application" aria-label="Интерактивное путешествие">
+  <div class="c" id="card"></div>
+</div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<script>
+const IMG='img/';
+const WORDS={
+ konnichiwa:{ru:'Конничива',jp:'こんにちは',tr:'здравствуйте'},
+ sumimasen:{ru:'Сумимасэн',jp:'すみません',tr:'извините'},
+ arigato:{ru:'Аригато',jp:'ありがとう',tr:'спасибо'},
+ oishii:{ru:'Оиси',jp:'おいしい',tr:'вкусно!'},
+ sayonara:{ru:'Саёнара',jp:'さようなら',tr:'до свидания'}
+};
+const SND='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>';
+const MUTE='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
+const SNDs=SND.replace(/width="28" height="28"/,'width="16" height="16"');
+const HEART='<svg width="26" height="26" viewBox="0 0 24 24" fill="#E8365D" stroke="#111" stroke-width="1.6"><path d="M12 21s-7.5-4.6-9.5-9.2C1.1 8.4 3.2 5 6.6 5c2 0 3.4 1.1 4.4 2.5C12 6.1 13.4 5 15.4 5c3.4 0 5.5 3.4 4.1 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+const CARDS=[
+ {bg:'c01',loc:'ТОКИО · АЭРОПОРТ · ДЕНЬ 1',step:0,
+  nar:'Шестнадцать часов в небе — и мы в Токио! Впереди шесть дней пути через всю Японию к острову, где кошек больше, чем людей.',
+  bub:[{w:'ПЕТЯ',t:'Мирон, мы в Японии!',c:'tu',s:'left:20px;top:370px;width:170px;font-size:22px'},
+       {w:'ИРИСКА',t:'Но сначала —<br>5 главных слов!',c:'tu',s:'left:352px;top:470px;width:170px;font-size:22px'}],
+  type:'next',btn:'Поехали!'},
+ {bg:'c02',loc:'ТОКИО · АЭРОПОРТ · ДЕНЬ 1',step:0,
+  nar:'Двери аэропорта открылись — и первый японец уже кланяется Мирону. В Японии здороваются не за руку, а поклоном: чем ниже, тем больше уважения.',
+  bub:[{w:'ЯПОНЕЦ',t:'Конничива!',c:'td',s:'right:24px;top:218px;width:200px;font-size:28px'}],
+  type:'word',word:'konnichiwa',btn:'Поклониться и сказать: Конничива!'},
+ {bg:'c03',loc:'ТОКИО · ДЕНЬ 1',step:0,
+  nar:'Мы вышли на улицы Токио. Здесь очень чисто и тихо, а люди при встрече улыбаются и кланяются. Я тоже решил поздороваться по-японски…',
+  bub:[{w:'ПЕТЯ',t:'Саёнара!',c:'tl',s:'left:180px;top:206px;width:170px;font-size:28px',id:'pb'}],
+  type:'choice',q:'Что Петя должен был сказать?',
+  opts:[{t:'Конничива',ok:true,fb:'Точно! Конничива — «здравствуйте». Петя: «Спасибо, Мирон! Буду знать»'},
+        {t:'Саёнара',fb:'Саёнара — это «до свидания». Петя как раз так и ошибся! Попробуй ещё'}],
+  after:{bubble:'pb',text:'Конничива!'}},
+ {bg:'c04',loc:'ТОКИО · СИБУЯ · ДЕНЬ 1',step:0,
+  nar:'Вечер первого дня. Мы на Сибуя — самом знаменитом перекрёстке мира: за один зелёный свет здесь проходят тысячи людей. Я мечтал увидеть его с детства! Но в этой толпе мы потеряли дорогу к отелю…',
+  bub:[{w:'ИРИСКА',t:'Как спросить дорогу?',c:'tl',s:'left:262px;top:262px;width:240px'}],
+  type:'word',word:'sumimasen',noStar:true,btn:'Спросить дорогу'},
+ {bg:'c05',loc:'ТОКИО · СИБУЯ · ДЕНЬ 1',step:0,
+  nar:'Мирон набрался смелости и подошёл к девушке с сумкой. В Японии не принято громко окликать незнакомцев — люди здесь очень вежливые и немного стеснительные.',
+  bub:[],
+  type:'choice',q:'Как обратиться к девушке?',star:'sumimasen',
+  opts:[{t:'«Эй! Где отель?»',fb:'Девушка испугалась и чуть не ушла. В Японии так не говорят — попробуй вежливо'},
+        {t:'Поклониться: «Сумимасэн!»',ok:true,fb:'Девушка улыбнулась: «Конечно, я покажу!» Вежливость открывает любые двери'}]},
+ {bg:'c06',loc:'ТОКИО · СИБУЯ · ДЕНЬ 1',step:0,
+  nar:'Девушка улыбнулась и проводила нас до тихой улочки с фонариками. Отель — совсем рядом! Осталось только поблагодарить её по-японски.',
+  bub:[{w:'ДЕВУШКА',t:'Вам туда!',c:'tr',s:'right:22px;top:232px;width:200px;font-size:25px'}],
+  type:'word',word:'arigato',btn:'Поклониться: Аригато!'},
+ {bg:'c07',loc:'ОСАКА · ДОТОНБОРИ · ДЕНЬ 2',step:1,
+  nar:'Скоростной поезд синкансэн домчал нас до Осаки за два часа. Осака — шумная и весёлая, а её главная еда — такояки: горячие шарики с осьминогом.',
+  bub:[{w:'ПОВАР',t:'Ну как?',c:'tl',s:'left:150px;top:220px;width:170px;font-size:25px'}],
+  type:'word',word:'oishii',btn:'Сказать повару: Оиси!'},
+ {bg:'c08',loc:'НАРА · ДЕНЬ 3',step:2,
+  nar:'В парке Нара живёт больше тысячи оленей — они гуляют где хотят! Мирон угостил оленя печеньем, и тот низко поклонился в ответ.',
+  bub:[{w:'ИРИСКА',t:'Что олень хотел сказать?',c:'tu',s:'left:300px;top:470px;width:220px;font-size:23px'}],
+  type:'choice',q:'Выбери слово',
+  opts:[{t:'Саёнара',fb:'Саёнара — «до свидания». Но олень никуда не уходит — он ждёт ещё печенья!'},
+        {t:'Аригато',ok:true,fb:'Верно! Олень сказал «спасибо» за печенье. Даже олени в Японии вежливые'},
+        {t:'Сумимасэн',fb:'Сумимасэн — «извините». Олень ни в чём не виноват — подумай ещё'}]},
+ {bg:'c09',loc:'ПОЕЗД К МОРЮ · ДЕНЬ 5',step:3,
+  nar:'Старый дизельный поезд везёт нас в маленькую деревню у моря — в ней всего 300 жителей. Оттуда до острова кошек можно добраться только на лодке.',
+  bub:[{w:'ПЕТЯ',t:'Экзамен! Кто лучше запомнил?',c:'tl',s:'left:140px;top:212px;width:220px;font-size:23px'}],
+  type:'match',q:'Соедини слово и перевод'},
+ {bg:'c10',loc:'ОСТРОВ КОШЕК · ДЕНЬ 6',step:4,
+  nar:'Шесть дней пути — и мы на острове кошек! Ириска долго молчала, смотрела на море и улыбалась. Рыжий кот сам подошёл к Мирону погреться.',
+  bub:[{w:'ПЕТЯ',t:'Мирон, а о чём мечтаешь ты? Расскажи маме!',c:'tlf',s:'left:250px;top:214px;width:260px;font-size:23px'},
+       {w:'ИРИСКА',t:'Я с детства мечтала попасть на этот остров!',c:'tu',s:'left:20px;top:560px;width:250px;font-size:23px'}],
+  type:'next',btn:'Рассказать маме'},
+ {bg:'c10',type:'family'},
+ {bg:'c12',loc:'ОСТРОВ КОШЕК · ДЕНЬ 6',step:4,
+  nar:'Солнце садится, лодка отчаливает. Кошки провожают нас с пристани. Пора прощаться с островом — и с Японией.',
+  bub:[{w:'ПЕТЯ',t:'Теперь ты знаешь японский лучше меня!',c:'tl',s:'left:200px;top:196px;width:250px;font-size:23px'}],
+  type:'word',word:'sayonara',btn:'Помахать: Саёнара!'},
+ {bg:'c13',type:'final'}
+];
+
+let i=-1, learned=new Set(), narrate=true, mistakes=0, hist=[], enterLearned=[];
+const card=document.getElementById('card'), stage=document.getElementById('stage');
+
+// ---------- scaling
+function fit(){const s=Math.min(innerWidth/540,innerHeight/960);stage.style.transform=`scale(${s})`;}
+addEventListener('resize',fit);fit();
+
+// ---------- preload
+CARDS.forEach(c=>{const im=new Image();im.src=IMG+c.bg+'.jpg';});
+
+// ---------- audio (Web Audio + заранее записанные mp3 слов)
+const AC=window.AudioContext||window.webkitAudioContext;
+let actx=null, bufs={}, curSrc=null, curEl=null;
+function ctx(){ if(!actx&&AC){ try{actx=new AC();}catch(e){} } return actx; }
+function unlock(){
+ const c=ctx(); if(!c)return;
+ if(c.state!=='running'){ c.resume().catch(()=>{}); }
+ // iOS: короткий беззвучный буфер внутри жеста пользователя
+ try{const b=c.createBuffer(1,1,22050),s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start(0);}catch(e){}
+}
+['pointerdown','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&actx&&actx.state!=='running') actx.resume().catch(()=>{}); });
+// загрузка слов
+const raw={};
+Object.keys(WORDS).forEach(k=>{
+ raw[k]=fetch('audio/'+k+'.mp3').then(r=>r.arrayBuffer()).catch(()=>null);
+});
+async function getBuf(k){
+ if(bufs[k])return bufs[k];
+ const c=ctx(); const ab=await raw[k]; if(!c||!ab)return null;
+ try{ bufs[k]=await new Promise((res,rej)=>c.decodeAudioData(ab.slice(0),res,rej)); }catch(e){ return null; }
+ return bufs[k];
+}
+function stopWord(){ try{curSrc&&curSrc.stop();}catch(e){} curSrc=null; if(curEl)curEl.classList.remove('play'); curEl=null; }
+async function sayWord(k,el){
+ unlock(); stopWord();
+ const c=ctx(); const b=await getBuf(k);
+ if(c&&b){
+  if(c.state!=='running'){ try{await c.resume();}catch(e){} }
+  const s=c.createBufferSource(); s.buffer=b;
+  const g=c.createGain(); g.gain.value=1; s.connect(g).connect(c.destination);
+  curSrc=s; wordDuck(b.duration); if(el){curEl=el;el.classList.add('play');}
+  s.onended=()=>{ if(curSrc===s){curSrc=null;} if(el)el.classList.remove('play'); };
+  s.start(0); return;
+ }
+ // запасной вариант — обычный <audio>
+ try{ const a=new Audio('audio/'+k+'.mp3'); if(el){el.classList.add('play');a.onended=()=>el.classList.remove('play');} await a.play(); return; }catch(e){}
+}
+function tone(freqs,dur=.12,type='square',vol=.06){
+ const c=ctx(); if(!c)return;
+ if(c.state!=='running') c.resume().catch(()=>{});
+ try{ freqs.forEach((f,k)=>{const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;
+   const t=c.currentTime+0.02+k*dur;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur*1.6);
+   o.connect(g).connect(c.destination);o.start(t);o.stop(t+dur*1.7);}); }catch(e){}
+}
+const sfx={ok:()=>tone([660,880,1320],.09,'triangle',.09),bad:()=>tone([220,180],.15,'sawtooth',.05),
+ star:()=>tone([784,988,1175,1568],.08,'triangle',.08),click:()=>tone([440],.04,'square',.03),
+ win:()=>tone([523,659,784,1047,784,1047,1319],.11,'triangle',.09)};
+// ---------- звук сцены: фон места + голос рассказчика (Петя)
+const AMB=['airport','airport','street','shibuya','shibuya','lantern','osaka','nara','train','island','island','boat','island'];
+const AMB_VOL={airport:.55,street:.55,shibuya:.55,lantern:.6,osaka:.5,nara:.5,train:.5,island:.6,boat:.45};
+const DUCK=.6; // фон тише, пока говорит рассказчик
+const rawA={}, bufA={};
+function preload(path){ if(!rawA[path]) rawA[path]=fetch(path).then(r=>r.ok?r.arrayBuffer():null).catch(()=>null); return rawA[path]; }
+async function buf(path){
+ if(bufA[path])return bufA[path];
+ const c=ctx(); const ab=await preload(path); if(!c||!ab)return null;
+ try{ bufA[path]=await new Promise((res,rej)=>c.decodeAudioData(ab.slice(0),res,rej)); }catch(e){ return null; }
+ return bufA[path];
+}
+const narPath=k=>'audio/nar/n'+String(k+1).padStart(2,'0')+'.mp3';
+const ambPath=a=>'audio/amb/'+a+'.mp3';
+for(let k=0;k<13;k++)preload(narPath(k));
+[...new Set(AMB)].forEach(a=>preload(ambPath(a)));
+let master=null, ambCur=null, narSrc=null, narGain=null, narT=null, ambToken=0;
+function bus(){ const c=ctx(); if(!c)return null; if(!master){master=c.createGain();master.gain.value=narrate?1:0;master.connect(c.destination);} return master; }
+function setSceneSound(on){ const c=ctx(),m=bus(); if(!m)return; m.gain.cancelScheduledValues(c.currentTime); m.gain.setTargetAtTime(on?1:0,c.currentTime,.15); if(!on)stopNar(); }
+async function setAmb(name){
+ const c=ctx(); const m=bus(); if(!c||!m)return;
+ if(ambCur&&ambCur.name===name)return;
+ const tok=++ambToken;
+ if(ambCur){ const old=ambCur; old.g.gain.cancelScheduledValues(c.currentTime); old.g.gain.setTargetAtTime(0,c.currentTime,.4); setTimeout(()=>{try{old.s.stop()}catch(e){}},2500); ambCur=null; }
+ if(!name)return;
+ const b=await buf(ambPath(name)); if(!b||tok!==ambToken)return;
+ if(c.state!=='running'){try{await c.resume()}catch(e){}}
+ const s=c.createBufferSource(); s.buffer=b; s.loop=true;
+ const g=c.createGain(); g.gain.value=0; s.connect(g).connect(m); s.start(0);
+ const v=(AMB_VOL[name]||.55)*(narSrc?DUCK:1);
+ g.gain.setTargetAtTime(v,c.currentTime,.6);
+ ambCur={name,s,g};
+}
+function duck(on){ const c=ctx(); if(!c||!ambCur)return; const v=(AMB_VOL[ambCur.name]||.55)*(on?DUCK:1); ambCur.g.gain.cancelScheduledValues(c.currentTime); ambCur.g.gain.setTargetAtTime(v,c.currentTime,.35); }
+function stopNar(){ if(narSrc){ const s=narSrc; narSrc=null; try{s.onended=null;s.stop()}catch(e){} } duck(false); }
+async function playNar(k,force){
+ if(!narrate){ if(!force)return; narrate=true; const b=document.getElementById('narr'); if(b){b.classList.add('on');b.innerHTML=SND.replace(/width="28" height="28"/,'width="20" height="20"');} setSceneSound(true); setAmb(AMB[k]); }
+ const c=ctx(); const m=bus(); if(!c||!m||k<0)return;
+ stopNar();
+ const b=await buf(narPath(k)); if(!b||k!==i)return;
+ if(c.state!=='running'){try{await c.resume()}catch(e){}}
+ const s=c.createBufferSource(); s.buffer=b;
+ narGain=narGain||(()=>{const g=c.createGain();g.gain.value=1;g.connect(m);return g;})();
+ narGain.gain.cancelScheduledValues(c.currentTime); narGain.gain.setValueAtTime(1,c.currentTime);
+ s.connect(narGain); narSrc=s; duck(true);
+ s.onended=()=>{ if(narSrc===s){ narSrc=null; duck(false); } };
+ s.start(c.currentTime+.05);
+}
+// пока звучит японское слово — рассказчик чуть тише
+function wordDuck(sec){ const c=ctx(); if(!c||!narGain)return; const t=c.currentTime; narGain.gain.cancelScheduledValues(t); narGain.gain.setTargetAtTime(.25,t,.05); narGain.gain.setTargetAtTime(1,t+sec+.1,.2); }
+
+// ---------- helpers
+function head(n){
+ return `<div class="cap">КАРТОЧКА ${n}/13</div>
+ <div class="tools">
+  <button class="ib" id="back" aria-label="Назад" ${hist.length?'':'disabled'}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="ib ${narrate?'on':''}" id="narr" aria-label="Голос и звуки сцены" title="Голос и звуки сцены">${narrate?SND.replace(/width="28" height="28"/,'width="20" height="20"'):MUTE}</button>
+ </div>
+ <div class="cnt" id="cnt">★ ${learned.size}/5</div>`;
+}
+function loc(place,step){
+ let d='';for(let k=0;k<4;k++)d+=`<i class="${k<=step?'on':''}"></i>`+(k<3?'<s></s>':'');
+ return `<div class="loc"><span>${place}</span><span class="rt">${d}&nbsp;ОСТРОВ КОШЕК</span></div>`;
+}
+function bubbles(arr){return arr.map(b=>`<div class="b ${b.c}" ${b.id?`id="${b.id}"`:''} style="${b.s}"><span class="n">${b.w}</span><span class="bt">${b.t}</span></div>`).join('');}
+function wordBox(k){const w=WORDS[k];return `<div class="w"><button class="snd" data-w="${k}" aria-label="Послушать слово">${SND}</button><div><b>${w.ru}<span class="jp">${w.jp}</span></b><span>значит «${w.tr}»</span></div></div>`;}
+function addStar(k){
+ if(learned.has(k))return;learned.add(k);
+ const c=document.getElementById('cnt');c.textContent=`★ ${learned.size}/5`;c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');
+ sfx.star();toast(`+1 слово: ${WORDS[k].ru}`);
+}
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;card.appendChild(d);setTimeout(()=>d.remove(),1700);live(t);}
+function live(t){document.getElementById('live').textContent=t;}
+function modal(h,p,btn='Понятно'){
+ const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="box"><h3>${h}</h3><p>${p}</p><button class="btn">${btn}</button></div>`;
+ m.querySelector('.btn').onclick=()=>{sfx.click();m.remove();};card.appendChild(m);
+}
+function confetti(){const c=document.createElement('div');c.className='confetti';const cols=['#FFE36B','#fff','#E8365D','#9BE38A','#FFF6D8'];
+ for(let k=0;k<70;k++){const e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.background=cols[k%5];
+  e.style.animationDuration=(1.8+Math.random()*1.8)+'s';e.style.animationDelay=(Math.random()*.8)+'s';e.style.transform=`rotate(${Math.random()*360}deg)`;c.appendChild(e);}
+ card.appendChild(c);setTimeout(()=>c.remove(),4500);}
+
+function go(n,push=true){
+ if(push&&i>=0)hist.push({i,learned:enterLearned});
+ i=n;render();
+}
+function next(){go(i+1);}
+function back(){if(!hist.length)return;const h=hist.pop();learned=new Set(h.learned);i=h.i;render();}
+
+// ---------- render
+function render(){
+ const c=CARDS[i];const n=i+1;enterLearned=[...learned];
+ card.classList.remove('in');
+ let h=`<div class="bg" style="background-image:url(${IMG+c.bg}.jpg)"></div>`;
+ if(c.type==='family'){
+  h+=`<div class="dim"></div>`+head(n)+`
+  <div class="fam"><div class="t">СЕМЕЙНАЯ ПАУЗА</div><div>${HEART}</div>
+   <p><b>Мирон,</b> расскажи маме, о чём ты мечтаешь.</p>
+   <p><b>Мама,</b> расскажи Мирону, о чём мечтала ты, когда была маленькой.</p>
+   <div class="hint">ИГРА ПОДОЖДЁТ — НЕ ТОРОПИТЕСЬ</div><div class="timer"><i id="tm"></i></div></div>
+  <div class="ui"><button class="btn" id="go">Мы рассказали друг другу</button></div>`;
+ }else if(c.type==='final'){
+  h+=head(n)+`
+  <div class="ach"><div class="medal">★</div><div class="t">НОВАЯ АЧИВКА</div><h2>Знает 5 японских слов</h2>
+   <div class="wl">${Object.keys(WORDS).map(k=>`<span data-w="${k}">${SNDs}${WORDS[k].ru}</span>`).join('')}</div>
+   <div class="stats"><span>СЛОВ: ${learned.size}/5</span><span>ОШИБОК: ${mistakes}</span><span>ВРЕМЯ: ${mins()}</span></div></div>
+  <div class="ui"><button class="btn alt" id="invite" style="font-size:18px">Пригласи друга — открой секретную серию</button>
+   <button class="btn" id="s2" style="font-size:18px">Серия 2: Токийский дрифт →</button></div>`;
+ }else{
+  h+=head(n)+loc(c.loc,c.step)+`<div class="nar">${c.nar}</div>`+bubbles(c.bub||[])+`<div class="ui" id="ui"></div>`;
+ }
+ card.innerHTML=h;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>card.classList.add('in')));
+ const ui=document.getElementById('ui');
+ if(c.type==='next'){ui.innerHTML=`<button class="btn" id="go">${c.btn}</button>`;}
+ if(c.type==='word'){
+  ui.innerHTML=wordBox(c.word)+`<button class="btn" id="go">${c.btn}</button>`;
+ }
+ if(c.type==='choice'){
+  ui.innerHTML=`<div class="q">${c.q}</div>`+c.opts.map((o,k)=>`<button class="btn alt" data-o="${k}">${o.t}</button>`).join('');
+  ui.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>choose(c,+b.dataset.o,b));
+ }
+ if(c.type==='match')renderMatch(ui,c);
+ // events
+ const go_=document.getElementById('go');
+ if(go_)go_.onclick=()=>{
+  sfx.click();
+  if(c.type==='word'){
+   sayWord(c.word);
+   if(!c.noStar)addStar(c.word);
+   go_.disabled=true;setTimeout(next,c.noStar?400:1300);
+  }else next();
+ };
+ card.querySelectorAll('[data-w]').forEach(e=>e.onclick=()=>sayWord(e.dataset.w,e));
+ document.getElementById('back').onclick=()=>{sfx.click();back();};
+ document.getElementById('narr').onclick=e=>{narrate=!narrate;const b=e.currentTarget;b.classList.toggle('on',narrate);b.innerHTML=narrate?SND.replace(/width="28" height="28"/,'width="20" height="20"'):MUTE;setSceneSound(narrate);if(narrate)playNar(i);};
+ const nb=card.querySelector('.nar');if(nb){nb.style.cursor='pointer';nb.title='Нажми, чтобы послушать ещё раз';nb.onclick=()=>playNar(i,true);}
+ if(c.type==='family'){const tm=document.getElementById('tm');setTimeout(()=>{tm.style.transitionDuration='60s';tm.style.width='100%';},100);}
+ if(c.type==='final'){sfx.win();confetti();
+  document.getElementById('invite').onclick=()=>{sfx.click();modal('Секретная серия','Отправь ссылку другу. Когда он пройдёт первую серию — вам обоим откроется секретная серия «Ночь в отеле-библиотеке».','Скопировать ссылку');};
+  document.getElementById('s2').onclick=()=>{sfx.click();modal('Серия 2: Токийский дрифт','Мчимся с Петей и Ириской на спорткарах к Токийской башне! Выйдет вместе с новым видео на YouTube.','Жду!');};
+  const rs=document.createElement('button');rs.className='ib';rs.title='Пройти заново';rs.setAttribute('aria-label','Пройти заново');
+  rs.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg>';
+  rs.onclick=restart;card.querySelector('.tools').appendChild(rs);
+ }
+ setAmb(AMB[i]); stopNar(); clearTimeout(narT); narT=setTimeout(()=>playNar(i),650);
+ live('Карточка '+n);
+}
+function choose(c,k,b){
+ const o=c.opts[k];const ui=document.getElementById('ui');
+ ui.querySelectorAll('.fb').forEach(e=>e.remove());
+ const fb=document.createElement('div');fb.className='fb '+(o.ok?'good':'bad');
+ fb.innerHTML=`<div class="ic">${o.ok?'✓':'!'}</div><div>${o.fb}</div>`;
+ if(o.ok){
+  sfx.ok();b.classList.add('ok');ui.querySelectorAll('[data-o]').forEach(x=>{x.disabled=true;if(x!==b)x.style.display='none'});
+  ui.querySelector('.q').style.display='none';
+  ui.insertBefore(fb,b);
+  if(c.after){const pb=document.getElementById(c.after.bubble);if(pb)pb.querySelector('.bt').textContent=c.after.text;}
+  if(c.star)addStar(c.star);
+  const nb=document.createElement('button');nb.className='btn';nb.textContent='Дальше →';nb.onclick=()=>{sfx.click();next();};
+  b.replaceWith(nb);
+ }else{
+  mistakes++;sfx.bad();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');
+  ui.insertBefore(fb,ui.firstChild);
+ }
+}
+function renderMatch(ui,c){
+ const keys=['konnichiwa','sumimasen','arigato','oishii'];
+ const right=[...keys].sort(()=>Math.random()-.5);
+ ui.innerHTML=`<div class="q">${c.q}</div><div class="grid">`+
+  keys.map((k,r)=>`<div class="chip" data-l="${k}">${WORDS[k].ru}</div><div class="chip r" data-r="${right[r]}">${WORDS[right[r]].tr.replace('!','')}</div>`).join('')+
+  `</div><button class="btn alt" id="mgo" disabled style="opacity:.5">Соедини все пары</button>`;
+ let sel=null,done=0;
+ ui.querySelectorAll('[data-l]').forEach(e=>e.onclick=()=>{ui.querySelectorAll('[data-l]').forEach(x=>x.classList.remove('sel'));e.classList.add('sel');sel=e;sayWord(e.dataset.l);});
+ ui.querySelectorAll('[data-r]').forEach(e=>e.onclick=()=>{
+  if(!sel){e.classList.remove('bad');void e.offsetWidth;e.classList.add('bad');return;}
+  if(sel.dataset.l===e.dataset.r){sel.classList.remove('sel');sel.classList.add('done');e.classList.add('done');sel=null;done++;sfx.ok();
+   if(done===4){const g=document.getElementById('mgo');g.disabled=false;g.style.opacity=1;g.className='btn';g.textContent='Отлично! Дальше →';
+    const pb=card.querySelector('.b .bt');if(pb)pb.textContent='Мирон, ты лучше меня!';g.onclick=()=>{sfx.click();next();};}}
+  else{mistakes++;sfx.bad();[sel,e].forEach(x=>{x.classList.remove('bad');void x.offsetWidth;x.classList.add('bad');});}
+ });
+}
+let t0=Date.now();
+function mins(){const s=Math.round((Date.now()-t0)/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function restart(){stopNar();setAmb(null);learned=new Set();mistakes=0;hist=[];t0=Date.now();i=-1;showStart();}
+
+// ---------- start screen
+function showStart(){
+ card.innerHTML=`<div class="bg" style="background-image:url(${IMG}c01.jpg)"></div>
+ <div class="start"><div class="tag">ДЕМО · СЕРИЯ 1 ИЗ 5 · ДРОП «ЯПОНИЯ»</div>
+  <h1>Путь к Острову кошек</h1>
+  <p>Интерактивное путешествие с Петей и Ириской. Главный герой — Мирон.</p>
+  <div class="meta"><span>5 минут</span><span>13 карточек</span><span>5 японских слов</span><span>Включите звук</span></div>
+  <button class="btn" id="startb">Начать путешествие</button></div>`;
+ document.getElementById('startb').onclick=()=>{sfx.click();t0=Date.now();
+  unlock(); Object.keys(WORDS).forEach(getBuf); bus(); for(let k=0;k<13;k++)buf(narPath(k)); [...new Set(AMB)].forEach(a=>buf(ambPath(a)));
+  go(0,false);};
+}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')back();});
+showStart();
+</script>
+</body>
+</html>
